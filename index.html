@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>روز نگار بهدینان</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- کتابخانه‌های فایربیس -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header-bar">
+            <h1>روز نگار بهدینان</h1>
+            <button id="admin-btn" class="admin-login-btn" onclick="toggleAdmin()">ورود مدیر</button>
+        </div>
+        <div id="calendar-container"></div>
+    </div>
+
+    <!-- پنجره پاپ‌آپ مشاهده و ثبت یادداشت‌ها -->
+    <div id="note-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 id="modal-day-title">یادداشت‌های روز</h3>
+            <div id="modal-day-date" class="modal-date"></div>
+            
+            <!-- لیست یادداشت‌های موجود -->
+            <div id="notes-list" class="notes-list-container"></div>
+
+            <hr class="modal-divider">
+
+            <!-- فرم ثبت یادداشت جدید -->
+            <div class="add-note-form">
+                <h4>افزودن یادداشت جدید:</h4>
+                <input type="text" id="author-input" placeholder="نام و نام خانوادگی (اجباری)" class="modal-input">
+                <textarea id="note-input" placeholder="یادداشت خود را بنویسید..." class="modal-textarea"></textarea>
+                <button class="save-btn" onclick="saveNote()">ثبت یادداشت</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
