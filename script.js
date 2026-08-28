@@ -13,7 +13,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // رمز عبور مدیر
-const ADMIN_PASSWORD = "1234"; 
+const ADMIN_PASSWORD = "1964"; 
 let isAdmin = false;
 let notesData = {}; 
 let selectedDayKey = "";
