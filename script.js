@@ -12,8 +12,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// رمز عبور مدیر
-const ADMIN_PASSWORD = "1964"; 
+// رمز عبور مدیر (در صورت تمایل تغییر دهید)
+const ADMIN_PASSWORD = "1234"; 
 let isAdmin = false;
 let notesData = {}; 
 let selectedDayKey = "";
@@ -41,6 +41,7 @@ const monthNames = [
     "آذر‌", "دی‌", "بهمن‌", "اسفند‌"
 ];
 
+// لیست به‌روزرسانی شده جشن‌ها و مناسبت‌ها
 const specialEvents = {
     "0_0": "جشن نوروز",
     "0_5": "زاد روز اشو زرتشت",
@@ -81,7 +82,11 @@ function formatGregorianDate(date) {
     return `${month}/${day}/${year}`;
 }
 
-// دریافت لحظه‌ای لیست یادداشت‌ها
+// دریافت نام روز هفته به فارسی
+function getWeekDayName(date) {
+    return new Intl.DateTimeFormat('fa-IR', { weekday: 'long' }).format(date);
+}
+
 function fetchNotesAndRender() {
     db.collection("calendar_notes").onSnapshot((snapshot) => {
         notesData = {};
@@ -112,6 +117,7 @@ function generateCalendar() {
         const monthDiv = document.createElement('div');
         const seasonClass = getSeasonClass(monthIndex);
         monthDiv.className = `month-section ${seasonClass}`;
+        monthDiv.id = `month-${monthIndex}`; // شناسه برای لینک مستقیم
         
         let daysHtml = '';
         for (let i = 0; i < 30; i++) {
@@ -120,6 +126,7 @@ function generateCalendar() {
             
             let gregorianStr = formatGregorianDate(currentDate);
             let shamsiStr = new Intl.DateTimeFormat('fa-IR').format(currentDate);
+            let weekDayStr = getWeekDayName(currentDate);
 
             let eventKey = `${monthIndex}_${i}`;
             let dayKey = `day_${monthIndex}_${i}`;
@@ -129,7 +136,6 @@ function generateCalendar() {
                 eventHtml = `<div class="event-badge">${specialEvents[eventKey]}</div>`;
             }
 
-            // نمایش تعداد پیام‌ها روی کارت
             let count = (notesData[dayKey] || []).length;
             let noteBadgeHtml = count > 0 ? `<div class="note-count-badge">${toPersianDigits(count)} یادداشت</div>` : '';
 
@@ -138,6 +144,7 @@ function generateCalendar() {
                     <div class="custom-name">${customDayNames[i]}</div>
                     ${eventHtml}
                     <div class="shamsi-date">${shamsiStr}</div>
+                    <div class="week-day-name">${weekDayStr}</div>
                     <div class="gregorian-date">${gregorianStr}</div>
                     ${noteBadgeHtml}
                 </div>
@@ -163,6 +170,7 @@ function generateCalendar() {
 
         let gregorianStr = formatGregorianDate(currentDate);
         let shamsiStr = new Intl.DateTimeFormat('fa-IR').format(currentDate);
+        let weekDayStr = getWeekDayName(currentDate);
 
         let dayKey = `panjeh_${p}`;
         let count = (notesData[dayKey] || []).length;
@@ -172,6 +180,7 @@ function generateCalendar() {
             <div class="day-card" onclick="openModal('${dayKey}', '${panjehDayNames[p]}', '${shamsiStr}')">
                 <div class="custom-name">${panjehDayNames[p]}</div>
                 <div class="shamsi-date">${shamsiStr}</div>
+                <div class="week-day-name">${weekDayStr}</div>
                 <div class="gregorian-date">${gregorianStr}</div>
                 ${noteBadgeHtml}
             </div>
@@ -186,7 +195,6 @@ function generateCalendar() {
     container.appendChild(panjehDiv);
 }
 
-// باز کردن پاپ‌آپ و لیست تمام یادداشت‌های آن روز
 function openModal(dayKey, dayName, shamsiDate) {
     selectedDayKey = dayKey;
     document.getElementById('modal-day-title').innerText = `یادداشت‌های ${dayName}`;
@@ -229,7 +237,6 @@ function closeModal() {
     document.getElementById('note-modal').style.display = 'none';
 }
 
-// ذخیره یادداشت جدید (اضافه شدن به لیست)
 function saveNote() {
     const authorText = document.getElementById('author-input').value.trim();
     const noteText = document.getElementById('note-input').value.trim();
@@ -255,7 +262,6 @@ function saveNote() {
     }).then(() => closeModal());
 }
 
-// حذف یک یادداشت خاص توسط مدیر
 function deleteSingleNote(index) {
     if (!isAdmin) return;
     
@@ -277,7 +283,7 @@ function toggleAdmin() {
             const btn = document.getElementById('admin-btn');
             btn.innerText = "مدیر (فعال)";
             btn.classList.add('active');
-            alert("ورود مدیر موفقیت‌آمیز بود. حالا می‌توانید یادداشت‌ها را تک‌تک حذف کنید.");
+            alert("ورود مدیر موفقیت‌آمیز بود.");
             if (document.getElementById('note-modal').style.display === 'flex') {
                 renderNotesList();
             }
