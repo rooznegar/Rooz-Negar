@@ -10,6 +10,10 @@
     font-style: normal;
 }
 
+html {
+    scroll-behavior: smooth; /* اسکرول نرم برای لینک‌های ماه‌ها */
+}
+
 body {
     font-family: 'Vazirmatn', Tahoma, sans-serif;
     background-color: #f4f6f9;
@@ -19,15 +23,15 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 850px;
     margin: 0 auto;
-    padding-bottom: 60px; /* ایجاد فضا برای دکمه پایینی */
+    padding-bottom: 60px;
 }
 
 /* هدر و عنوان */
 .header-bar {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 h1, .month-title, .custom-name {
@@ -39,6 +43,40 @@ h1 {
     color: #333;
     font-size: 2.2em;
     text-align: center;
+}
+
+/* منوی دسترسی سریع به ماه‌ها */
+.months-nav-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+}
+
+.month-nav-btn {
+    color: #2c3e50;
+    text-decoration: none;
+    font-size: 0.85em;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s;
+    font-weight: bold;
+}
+
+.month-nav-btn:hover {
+    background-color: #3498db;
+    color: #ffffff;
+    border-color: #3498db;
 }
 
 /* دکمه مدیریت در انتهای صفحه */
@@ -64,8 +102,9 @@ h1 {
 .month-section {
     border-radius: 10px;
     padding: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    scroll-margin-top: 70px;
 }
 
 .season-spring { background-color: #eef9f1; }
@@ -94,7 +133,7 @@ h1 {
     background: #ffffff;
     border: 1px solid rgba(0,0,0,0.08);
     border-radius: 8px;
-    padding: 10px;
+    padding: 10px 5px;
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -114,7 +153,7 @@ h1 {
     background-color: #d35400;
     color: #ffffff;
     font-size: 0.75em;
-    padding: 3px 8px;
+    padding: 3px 6px;
     border-radius: 12px;
     margin: 4px auto;
     display: inline-block;
@@ -141,11 +180,20 @@ h1 {
     margin-top: 2px;
 }
 
+/* روز هفته تایپی و کوچک */
+.week-day-name {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    font-size: 0.72em;
+    color: #2c3e50;
+    margin-top: 2px;
+    font-weight: 500;
+}
+
 .gregorian-date {
     font-family: Tahoma, sans-serif;
-    font-size: 0.75em;
+    font-size: 0.72em;
     color: #868e96;
-    margin-top: 2px;
+    margin-top: 1px;
 }
 
 /* نشانگر تعداد یادداشت‌ها */
@@ -161,7 +209,7 @@ h1 {
     font-family: 'Vazirmatn', Tahoma, sans-serif;
 }
 
-/* پنجره مودال و لیست یادداشت‌ها */
+/* پنجره مودال */
 .modal {
     display: none;
     position: fixed;
