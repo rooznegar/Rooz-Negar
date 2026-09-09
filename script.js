@@ -82,7 +82,6 @@ function formatGregorianDate(date) {
     return `${month}/${day}/${year}`;
 }
 
-// دریافت نام روز هفته به فارسی
 function getWeekDayName(date) {
     return new Intl.DateTimeFormat('fa-IR', { weekday: 'long' }).format(date);
 }
@@ -102,6 +101,7 @@ function generateCalendar() {
     container.innerHTML = "";
     const today = new Date();
     const currentYear = today.getFullYear();
+    const todayGregorianStr = formatGregorianDate(today); // تاریخ امروز برای مقایسه
     
     const shamsiFormatter = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric' });
     const currentShamsiYearFa = shamsiFormatter.format(today);
@@ -117,7 +117,7 @@ function generateCalendar() {
         const monthDiv = document.createElement('div');
         const seasonClass = getSeasonClass(monthIndex);
         monthDiv.className = `month-section ${seasonClass}`;
-        monthDiv.id = `month-${monthIndex}`; // شناسه برای لینک مستقیم
+        monthDiv.id = `month-${monthIndex}`;
         
         let daysHtml = '';
         for (let i = 0; i < 30; i++) {
@@ -127,6 +127,12 @@ function generateCalendar() {
             let gregorianStr = formatGregorianDate(currentDate);
             let shamsiStr = new Intl.DateTimeFormat('fa-IR').format(currentDate);
             let weekDayStr = getWeekDayName(currentDate);
+
+            // بررسی اینکه آیا این کارت مربوط به امروز است یا خیر
+            let isToday = (gregorianStr === todayGregorianStr);
+            let todayLabelHtml = isToday ? `<div class="today-label">امروز</div>` : '';
+            let todayCardId = isToday ? 'id="today-card"' : '';
+            let todayClass = isToday ? 'is-today-card' : '';
 
             let eventKey = `${monthIndex}_${i}`;
             let dayKey = `day_${monthIndex}_${i}`;
@@ -140,7 +146,8 @@ function generateCalendar() {
             let noteBadgeHtml = count > 0 ? `<div class="note-count-badge">${toPersianDigits(count)} یادداشت</div>` : '';
 
             daysHtml += `
-                <div class="day-card ${specialEvents[eventKey] ? 'has-event' : ''}" onclick="openModal('${dayKey}', '${customDayNames[i]}', '${shamsiStr}')">
+                <div ${todayCardId} class="day-card ${specialEvents[eventKey] ? 'has-event' : ''} ${todayClass}" onclick="openModal('${dayKey}', '${customDayNames[i]}', '${shamsiStr}')">
+                    ${todayLabelHtml}
                     <div class="custom-name">${customDayNames[i]}</div>
                     ${eventHtml}
                     <div class="shamsi-date">${shamsiStr}</div>
@@ -172,12 +179,18 @@ function generateCalendar() {
         let shamsiStr = new Intl.DateTimeFormat('fa-IR').format(currentDate);
         let weekDayStr = getWeekDayName(currentDate);
 
+        let isToday = (gregorianStr === todayGregorianStr);
+        let todayLabelHtml = isToday ? `<div class="today-label">امروز</div>` : '';
+        let todayCardId = isToday ? 'id="today-card"' : '';
+        let todayClass = isToday ? 'is-today-card' : '';
+
         let dayKey = `panjeh_${p}`;
         let count = (notesData[dayKey] || []).length;
         let noteBadgeHtml = count > 0 ? `<div class="note-count-badge">${toPersianDigits(count)} یادداشت</div>` : '';
 
         panjehHtml += `
-            <div class="day-card" onclick="openModal('${dayKey}', '${panjehDayNames[p]}', '${shamsiStr}')">
+            <div ${todayCardId} class="day-card ${todayClass}" onclick="openModal('${dayKey}', '${panjehDayNames[p]}', '${shamsiStr}')">
+                ${todayLabelHtml}
                 <div class="custom-name">${panjehDayNames[p]}</div>
                 <div class="shamsi-date">${shamsiStr}</div>
                 <div class="week-day-name">${weekDayStr}</div>
