@@ -11,7 +11,7 @@
 }
 
 html {
-    scroll-behavior: smooth; /* اسکرول نرم برای لینک‌های ماه‌ها */
+    scroll-behavior: smooth;
 }
 
 body {
@@ -79,6 +79,19 @@ h1 {
     border-color: #3498db;
 }
 
+/* استایل ویژه دکمه امروز در منو */
+.today-nav-btn {
+    background-color: #2ecc71;
+    color: #ffffff;
+    border-color: #27ae60;
+}
+
+.today-nav-btn:hover {
+    background-color: #27ae60;
+    color: #ffffff;
+    border-color: #1e8449;
+}
+
 /* دکمه مدیریت در انتهای صفحه */
 .admin-login-btn {
     display: block;
@@ -137,6 +150,7 @@ h1 {
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
+    scroll-margin-top: 120px;
 }
 
 .day-card:hover {
@@ -146,6 +160,21 @@ h1 {
 
 .day-card.has-event {
     border: 1px solid #d35400;
+}
+
+/* کادر و برجسته‌سازی کارت روز امروز */
+.day-card.is-today-card {
+    border: 2px solid #2ecc71;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.25);
+}
+
+/* نشانگر «امروز» بالای اسم روز */
+.today-label {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    color: #2ecc71; /* سبز روشن‌تر از نام روزهای فروردین */
+    font-size: 0.75em;
+    font-weight: bold;
+    margin-bottom: 2px;
 }
 
 .event-badge {
@@ -180,7 +209,6 @@ h1 {
     margin-top: 2px;
 }
 
-/* روز هفته تایپی و کوچک */
 .week-day-name {
     font-family: 'Vazirmatn', Tahoma, sans-serif;
     font-size: 0.72em;
@@ -196,7 +224,6 @@ h1 {
     margin-top: 1px;
 }
 
-/* نشانگر تعداد یادداشت‌ها */
 .note-count-badge {
     display: inline-block;
     background-color: #2980b9;
