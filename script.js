@@ -101,7 +101,7 @@ function generateCalendar() {
     container.innerHTML = "";
     const today = new Date();
     const currentYear = today.getFullYear();
-    const todayGregorianStr = formatGregorianDate(today); // تاریخ امروز برای مقایسه
+    const todayGregorianStr = formatGregorianDate(today);
     
     const shamsiFormatter = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric' });
     const currentShamsiYearFa = shamsiFormatter.format(today);
@@ -128,7 +128,6 @@ function generateCalendar() {
             let shamsiStr = new Intl.DateTimeFormat('fa-IR').format(currentDate);
             let weekDayStr = getWeekDayName(currentDate);
 
-            // بررسی اینکه آیا این کارت مربوط به امروز است یا خیر
             let isToday = (gregorianStr === todayGregorianStr);
             let todayLabelHtml = isToday ? `<div class="today-label">امروز</div>` : '';
             let todayCardId = isToday ? 'id="today-card"' : '';
@@ -166,9 +165,10 @@ function generateCalendar() {
         container.appendChild(monthDiv);
     });
 
-    // روزهای پنجه
+    // گاتا بیو (پنجه)
     const panjehDiv = document.createElement('div');
     panjehDiv.className = 'month-section panjeh-bg';
+    panjehDiv.id = 'panjeh-section'; // شناسه برای لینک مستقیم
     let panjehHtml = '';
     
     for (let p = 0; p < panjehDaysCount; p++) {
@@ -202,7 +202,7 @@ function generateCalendar() {
     }
 
     panjehDiv.innerHTML = `
-        <h2 class="month-title">روزهای پنجه ${toPersianDigits(zoroastrianYear)} زرتشتی</h2>
+        <h2 class="month-title">گاتا بیو (پنجه) ${toPersianDigits(zoroastrianYear)} زرتشتی</h2>
         <div class="days-grid">${panjehHtml}</div>
     `;
     container.appendChild(panjehDiv);
@@ -314,5 +314,7 @@ function toggleAdmin() {
         }
     }
 }
+
+document.addEventListener('DOMContentLoaded', fetchNotesAndRender);
 
 document.addEventListener('DOMContentLoaded', fetchNotesAndRender);
